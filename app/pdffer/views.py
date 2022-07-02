@@ -1,8 +1,12 @@
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 from .model_ops import get_nearest_shops, get_all_items
 from django.views.decorators.http import require_http_methods
 import traceback
+import uuid, os, json
+from xhtml2pdf import pisa           
+
 
 def index(request):
     return render(request, 'index.html', context={})
@@ -35,3 +39,35 @@ def find_items_in_shop(request):
         return JsonResponse(status=500)
     
     return JsonResponse({"data": item_tuple})
+
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def get_pdf_from_html(request):
+    """
+    :param request:
+    :return:
+    """
+    content = json.loads(request.body)
+    # print('content', content)
+    html_body= content["html"]
+    
+    
+    filename = uuid.uuid4().hex + ".pdf"
+    result_file = "./" + filename
+    # pdfkit.from_string(html_body, "/tmp/" + filename)
+    print(result_file)
+
+    result_file = open(result_file, "w+b")
+
+    # convert HTML to PDF
+    pisa_status = pisa.CreatePDF(
+            html_body,                # the HTML to convert
+            dest=result_file)           # file handle to recieve result
+
+    print("pisa_status", pisa_status)
+    # close output file
+    result_file.close()                 # close output file
+
+    # return False on success and True on errors 
+    return JsonResponse({"success": pisa_status.err})
