@@ -1,0 +1,32 @@
+version: '3.7'
+services:
+  db:
+    image: kartoza/postgis
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-h", "localhost"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_PASSWORD: pdffer
+      POSTGRES_USER: pdffer
+      POSTGRES_DB: pdffer
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d/
+  app:
+    build:
+      context: ./app
+    ports:
+      - 8000:8000
+    environment:
+      - DB_HOST=db
+      - DB_NAME=pdffer
+      - DB_USER=pdffer
+      - DB_PASS=pdffer
+    volumes:
+      - "./app:/usr/app"
+    depends_on:
+      db: 
+        condition: service_healthy

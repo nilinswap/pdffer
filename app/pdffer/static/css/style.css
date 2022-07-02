@@ -1,0 +1,31 @@
+.main-plate {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.root-block {
+    display:flex; 
+    flex-direction: column;
+    min-height:100vh;
+    justify-content:space-between;
+    background-color: powderblue;
+}
+
+.content-block {
+    flex:1;
+    background-color: bisque;
+}
+
+.header-block {
+    display: flex;
+    height: 4rem;
+    justify-content: space-evenly;
+}
+
+.footer-block {
+    height: 4rem;
+    display: flex;
+    justify-content: space-evenly;
+}
