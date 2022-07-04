@@ -8,6 +8,8 @@ import uuid, os, json
 import base64
 from xhtml2pdf import pisa
 
+from .auth import api_auth
+
 
 def index(request):
     return render(request, "index.html", context={})
@@ -48,6 +50,7 @@ def find_items_in_shop(request):
 
 @csrf_exempt
 @require_http_methods(["POST"])
+@api_auth
 def get_pdf_from_html(request):
     """
     :param request:
@@ -73,4 +76,10 @@ def get_pdf_from_html(request):
     result_file.close()  # close output file
 
     result_file = open(result_file_path, "rb")
-    return FileResponse(result_file, content_type="application/pdf")
+    # return FileResponse(result_file, content_type="application/pdf")
+    body = {
+        'isBase64Encoded': True,
+        'pdf': base64.b64encode(result_file.read()).decode('UTF-8')
+    }
+    return JsonResponse(body)
+
