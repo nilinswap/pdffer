@@ -15,6 +15,7 @@ class ApiAuthMiddleware(object):
             client_id = verify(api_key=api_key)
             if client_id:
                 request.is_authenticated = True
+                request.client_id = client_id
             else:
                 request.is_authenticated = False
         except Exception as e:

@@ -1,7 +1,7 @@
 from appmigrations.models import ApiToken
 
 def verify(api_key: str):
-    ## TODO: Implement a get_or_404
+    ## TODO: Implement a get_or_404 https://docs.djangoproject.com/en/dev/topics/db/managers/
     api_token_list = ApiToken.objects.filter(api_key = api_key)
     n =  len(api_token_list)
     if not n:
