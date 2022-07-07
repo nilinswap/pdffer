@@ -2,6 +2,7 @@ from django.utils.translation import gettext_lazy as _
 from django.db import models
 from datetime import datetime
 import uuid
+from encrypted_id.models import EncryptedIDModel
 
 class Invite(models.Model):
     class Meta:
@@ -12,7 +13,7 @@ class Invite(models.Model):
     updated_on = models.DateTimeField(auto_now=True)
     
 
-class Client(models.Model):
+class Client(EncryptedIDModel):
     class Meta:
             db_table = "client"
 

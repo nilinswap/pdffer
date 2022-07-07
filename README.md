@@ -48,3 +48,10 @@ Payments integration
 
 email verify
 
+
+Next stage todo
+1. review areas for security flaws like 
+    - verification email should not give away so much
+    - people can hit and try verification link etc.
+
+2. get secret from kms or something. right now one has to go into docker container and add password manually for email
