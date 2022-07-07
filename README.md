@@ -22,7 +22,38 @@ docker-compose run --rm app python manage.py populate_db
 ### wkHtmltopdf docker
 Apart from puppdf, took lessons from [this article](https://sasablagojevic.com/setting-up-wkhtmltopdf-on-docker-alpine-linux)
 
+- [email sending](https://towardsdatascience.com/how-to-easily-automate-emails-with-python-8b476045c151)
 
 ## TODO
 
-is pypdf better than wkhtmltopdf-pdfkit?
+apis 
+x generate invite - use admin site
+x verify invite
+x create client
+- verify Email
+- signup with email and pass
+- verify login
+- generate api_key
+
+- signup flow - ask him to verify email. On verification, redirect it the 
+
+- make ui to consume all of above. 
+- Think credits, billing, pricing.
+
+Read
+
+Email Verification
+Cost analysis per pdf
+Payments integration
+
+
+
+email verify
+
+
+Next stage todo
+1. review areas for security flaws like 
+    - verification email should not give away so much
+    - people can hit and try verification link etc.
+
+2. get secret from kms or something. right now one has to go into docker container and add password manually for email

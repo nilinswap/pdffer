@@ -96,7 +96,9 @@ WSGI_APPLICATION = 'proj.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
-print("here here", os.environ.get('DB_HOST'), os.environ.get('DB_NAME'))
+# print("here here", os.environ.get('DB_HOST'), os.environ.get('DB_NAME'))
+
+SITE_URL = 'http://localhost:8000'
 
 DATABASES = {
     "default": {

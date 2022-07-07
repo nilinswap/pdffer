@@ -11,7 +11,15 @@ from auth.auth_decorator import api_auth
 
 
 def index(request):
-    return render(request, "index.html", context={})
+    return render(request, "index.html", context={"api_key": "xyz"})
+
+
+@csrf_exempt
+def signup(request):
+    return render(request, "signup.html", context={})
+
+def please_verify_your_email(request):
+    return render(request, "please_verify_your_email.html", context={})
 
 
 @require_http_methods(["GET"])
@@ -49,8 +57,7 @@ def get_pdf_from_html(request):
     result_file = open(result_file_path, "rb")
     # return FileResponse(result_file, content_type="application/pdf")
     body = {
-        'isBase64Encoded': True,
-        'pdf': base64.b64encode(result_file.read()).decode('UTF-8')
+        "isBase64Encoded": True,
+        "pdf": base64.b64encode(result_file.read()).decode("UTF-8"),
     }
     return JsonResponse(body)
-

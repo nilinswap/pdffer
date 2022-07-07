@@ -1,0 +1,21 @@
+{% extends "base_generic.html" %}
+
+
+
+{% block content %}
+
+{% load static %}
+<script src="{% static 'js/signup.js' %}"></script>
+
+<div class="main-plate">
+    <div class="col-lg-6">
+        <form id="signup-form" class="input-group" method="post">
+            <input id="email-input" type="email" class="form-control" placeholder="email" required>
+            <input id="password-input" type="password" class="form-control" placeholder="password" required>
+            <span class="input-group-btn">
+                <button id="signup-submit-button" class="btn btn-default" type="submit">Submit</button>
+            </span>
+        </form>
+    </div>
+</div>
+{% endblock %}

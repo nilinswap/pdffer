@@ -13,3 +13,4 @@ sqlparse==0.4.1
 typing-extensions==3.7.4.3
 urllib3==1.26.9
 xhtml2pdf==0.2.8
+django-encrypted-id==0.3.2
