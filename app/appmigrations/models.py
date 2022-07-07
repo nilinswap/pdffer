@@ -36,3 +36,14 @@ class ApiToken(models.Model):
     api_key = models.CharField(max_length=500, unique=True)
     created_on = models.DateTimeField(auto_now=True)
     updated_on = models.DateTimeField(auto_now=True)
+
+
+# class Session(models.Model):
+#     class Meta:
+#             db_table = "session"
+
+#     id = models.BigAutoField(primary_key=True)
+#     client = models.ForeignKey(Client, on_delete=models.CASCADE)
+#     session_id = models.CharField(max_length=500, unique=True)
+#     created_on = models.DateTimeField(auto_now=True)
+#     updated_on = models.DateTimeField(auto_now=True)

@@ -1,4 +1,4 @@
-from django.http import JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.db import IntegrityError
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
@@ -24,7 +24,9 @@ def verify_invite(_, invite_id: str):
 @csrf_exempt
 @require_http_methods(["POST"])
 def create_client(request):
-    content = json.loads(request.body)
+    print("rb", request.body)
+    content = json.loads(request.body.decode("utf-8"))
+    print("new_rb", request.body.decode("utf-8"))
     if "email" not in content or "password" not in content:
         return JsonResponse(data={}, status=400)
 
@@ -43,16 +45,16 @@ def create_client(request):
         # print('api_token', api_token)
     except IntegrityError as ie:
         print("ie", ie)
-        return JsonResponse(data={}, status=400)
+        return JsonResponse(data={"success": False}, status=400)
 
-    return JsonResponse(data={}, status=201)
+    return JsonResponse(data={"success": True}, status=201)
 
 
 @csrf_exempt
 @require_http_methods(["DELETE"])
 def delete_client(request):
     content = json.loads(request.body)
-    email=content["email"]
+    email = content["email"]
     print("email", email)
     try:
         client = Client.objects.get(
@@ -75,7 +77,7 @@ def verify_email(_, client_ekey: str):
     if client.created_on > timezone.now() - datetime.timedelta(minutes=30):
         client.is_email_verified = True
         client.save()
-        return JsonResponse(data={}, status=200)
+        return HttpResponseRedirect('/')
     return JsonResponse(
         data={"message": "Email verification link is expired"}, status=404
     )

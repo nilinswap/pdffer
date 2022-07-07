@@ -35,6 +35,8 @@ x create client
 - verify login
 - generate api_key
 
+- signup flow - ask him to verify email. On verification, redirect it the 
+
 - make ui to consume all of above. 
 - Think credits, billing, pricing.
 

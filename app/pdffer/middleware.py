@@ -14,10 +14,10 @@ class ApiAuthMiddleware(object):
         try:
             client_id = verify(api_key=api_key)
             if client_id:
-                request.is_authenticated = True
+                request.is_api_authenticated = True
                 request.client_id = client_id
             else:
-                request.is_authenticated = False
+                request.is_api_authenticated = False
         except Exception as e:
             raise e
         response = self.get_response(request)
