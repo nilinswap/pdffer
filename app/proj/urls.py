@@ -18,5 +18,6 @@ from django.urls import include, path
 
 urlpatterns = [
     path('', include('pdffer.urls')),
+    path('auth/', include('auth.urls')),
     path('admin/', admin.site.urls),
 ]
