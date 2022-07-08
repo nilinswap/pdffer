@@ -3,11 +3,13 @@ from django.db import IntegrityError
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from emailS.service import send_verification_email
-from appmigrations.models import Client, Invite
+from appmigrations.models import Client, Invite, Session
 import json
 import datetime
 from django.utils import timezone
 from django.conf import settings
+from auth.utils import set_cookie
+import uuid
 
 
 def send_email(client: Client):
@@ -35,23 +37,17 @@ def create_client(request):
     print("new_rb", request.body.decode("utf-8"))
     if "email" not in content or "password" not in content:
         return JsonResponse(data={}, status=400)
-
     try:
-        client = Client.objects.create(
+        client = Client.objects.create (
             email=content["email"],
             password=content["password"],
+            api_key=uuid.uuid4().hex,
         )
         client.save()
         send_email(client)
-
-        # api_key = uuid.uuid4().hex
-
-        # api_token = ApiToken.objects.create(client = client, api_key = api_key)
-        # print('api_token', api_token)
     except IntegrityError as ie:
         print("ie", ie)
         return JsonResponse(data={"success": False}, status=400)
-
     return JsonResponse(data={"success": True}, status=201)
 
 
@@ -87,7 +83,10 @@ def verify_email(_, client_ekey: str):
         else:
             client.is_email_verified = True
             client.save()
-        return HttpResponseRedirect("/")
+        response = HttpResponseRedirect("/")
+        session = Session.objects.create(client=client)
+        set_cookie(response, 'session_id', session.ekey)
+        return response
     except Client.DoesNotExist:
         return JsonResponse(data={}, status=404)
 
@@ -103,10 +102,13 @@ def verify_login(request):
         client = Client.objects.get(email=content["email"])
         if not client.is_email_verified:
             send_email(client)
-            return HttpResponseRedirect("/auth/please_verify_your_email")
+            return JsonResponse(data={'success': True, "location": "/please_verify_your_email"}, status=278)
         elif client.password != content["password"]:
             return JsonResponse(data={}, status=400)
-        return JsonResponse(data={'success': True}, status=200)
+        session = Session.objects.create(client=client)
+        response = JsonResponse(data={'success': True}, status=200)
+        set_cookie(response, 'session_id', session.ekey)
+        return response
     except Client.DoesNotExist:
         return JsonResponse(data={}, status=404)
     except IntegrityError as ie:

@@ -2,7 +2,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
-import traceback
+from appmigrations.models import Session
 import uuid, os, json
 import base64
 from xhtml2pdf import pisa
@@ -11,7 +11,12 @@ from auth.auth_decorator import api_auth
 
 
 def index(request):
-    return render(request, "index.html", context={"api_key": "xyz"})
+    ## use cookie in session_id and use it to fetch client_id and api_key. pass it here in context. 
+    session_ekey = request.COOKIES['session_id']  
+    session = Session.objects.get(ekey=session_ekey)
+    client = session.client
+    api_key = client.api_key
+    return render(request, "index.html", context={"api_key": api_key})
 
 
 @csrf_exempt
