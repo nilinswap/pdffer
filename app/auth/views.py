@@ -10,6 +10,12 @@ from django.utils import timezone
 from django.conf import settings
 
 
+def send_email(client: Client):
+    client_ekey = client.ekey
+    verification_link = f"{settings.SITE_URL}/auth/verify_email/{client_ekey}"
+    send_verification_email(email=client.email, verification_link=verification_link)
+
+
 @csrf_exempt
 @require_http_methods(["PUT"])
 def verify_invite(_, invite_id: str):
@@ -36,9 +42,8 @@ def create_client(request):
             password=content["password"],
         )
         client.save()
-        client_ekey = client.ekey
-        verification_link = f"{settings.SITE_URL}/auth/verify_email/{client_ekey}"
-        send_verification_email(email=client.email, verification_link=verification_link)
+        send_email(client)
+
         # api_key = uuid.uuid4().hex
 
         # api_token = ApiToken.objects.create(client = client, api_key = api_key)
@@ -72,12 +77,38 @@ def delete_client(request):
 def verify_email(_, client_ekey: str):
     try:
         client = Client.objects.get(ekey=client_ekey)
+        if client.is_email_verified:
+            pass
+        elif client.created_on < (timezone.now() - datetime.timedelta(minutes=30)):
+            ## TODO: keep a table of emails and their verification links and check if the link is still valid. Instead of doing it here, do it like this.
+            return JsonResponse(
+                data={"message": "Email verification link is expired"}, status=404
+            )
+        else:
+            client.is_email_verified = True
+            client.save()
+        return HttpResponseRedirect("/")
     except Client.DoesNotExist:
         return JsonResponse(data={}, status=404)
-    if client.created_on > timezone.now() - datetime.timedelta(minutes=30):
-        client.is_email_verified = True
-        client.save()
-        return HttpResponseRedirect('/')
-    return JsonResponse(
-        data={"message": "Email verification link is expired"}, status=404
-    )
+
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def verify_login(request):
+    try:
+        content = json.loads(request.body)
+        if "email" not in content or "password" not in content:
+            return JsonResponse(data={}, status=400)
+
+        client = Client.objects.get(email=content["email"])
+        if not client.is_email_verified:
+            send_email(client)
+            return HttpResponseRedirect("/auth/please_verify_your_email")
+        elif client.password != content["password"]:
+            return JsonResponse(data={}, status=400)
+        return JsonResponse(data={'success': True}, status=200)
+    except Client.DoesNotExist:
+        return JsonResponse(data={}, status=404)
+    except IntegrityError as ie:
+        print("ie", ie)
+        return JsonResponse(data={}, status=400)

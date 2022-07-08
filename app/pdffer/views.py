@@ -18,12 +18,18 @@ def index(request):
 def signup(request):
     return render(request, "signup.html", context={})
 
+
+@csrf_exempt
+def login(request):
+    return render(request, "login.html", context={})
+
+
 def please_verify_your_email(request):
     return render(request, "please_verify_your_email.html", context={})
 
 
 @require_http_methods(["GET"])
-def healthcheck(request):
+def healthcheck(_):
     return HttpResponse("lub dub")
 
 

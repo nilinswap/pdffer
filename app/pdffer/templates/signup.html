@@ -5,8 +5,6 @@
 {% block content %}
 
 {% load static %}
-<script src="{% static 'js/signup.js' %}"></script>
-
 <div class="main-plate">
     <div class="col-lg-6">
         <form id="signup-form" class="input-group" method="post">
@@ -18,4 +16,6 @@
         </form>
     </div>
 </div>
+<script type="module" src="{% static 'js/signup.js' %}"></script>
+
 {% endblock %}
