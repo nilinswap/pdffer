@@ -1,21 +1,35 @@
-export async function hit_signup_login_api(email, password, post_api_url, redirect_url) {
-    console.log("here")
-    const response = await fetch(post_api_url, {
-        method: 'POST',
+export async function hit_api(url, method, body) {
+    const response = await fetch(url, {
+        method: method,
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-            email: email,
-            password: password
-        })
+        body: JSON.stringify(body)
     });
     const data = await response.json();
-    console.log(data);
-    if (data.status_code == 278) {
-        redirect_url = data.location
+    return data;
+}
+
+const getCookieValue = (name) => (
+    document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)')?.pop() || ''
+)
+
+export async function is_authenticated() {
+    session_id_val = getCookieValue('session_id');
+    if (session_id_val != null && session_id_val != '') {
+        const response = await fetch('/auth/verify_session/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                session_id: session_id_val
+            })
+        });
+        const data = await response.json();
+        if (data.success) {
+            return true;
+        }
     }
-    if (data.success) {
-        window.location.href = redirect_url;
-    }
+    return false;
 }
