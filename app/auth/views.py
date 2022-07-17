@@ -32,7 +32,6 @@ def verify_invite(_, invite_id: str):
 @csrf_exempt
 @require_http_methods(["POST"])
 def create_client(request):
-    print("rb", request.body)
     content = json.loads(request.body.decode("utf-8"))
     print("new_rb", request.body.decode("utf-8"))
     if "email" not in content or "password" not in content:
@@ -108,8 +107,27 @@ def verify_login(request):
         session = Session.objects.create(client=client)
         response = JsonResponse(data={'success': True}, status=200)
         set_cookie(response, 'session_id', session.ekey)
+        print("response", response.cookies)
         return response
     except Client.DoesNotExist:
+        return JsonResponse(data={}, status=404)
+    except IntegrityError as ie:
+        print("ie", ie)
+        return JsonResponse(data={}, status=400)
+
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def verify_session(request):
+    try:
+        content = json.loads(request.body)
+        if "session_id" not in content:
+            return JsonResponse(data={}, status=400)
+        session = Session.objects.get(ekey=content["session_id"])
+        if session.created_on < (timezone.now() - datetime.timedelta(days=7)):
+            return JsonResponse(data={}, status=400)
+        return JsonResponse(data={}, status=200)
+    except Session.DoesNotExist:
         return JsonResponse(data={}, status=404)
     except IntegrityError as ie:
         print("ie", ie)

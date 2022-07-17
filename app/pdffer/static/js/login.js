@@ -5,10 +5,10 @@ document.addEventListener("DOMContentLoaded", function () { // wait for the dom 
 });
 
 function main() {
-    if (is_authenticated()) {
-        window.location.replace('/');
-        return;
-    }
+    // if (is_authenticated()) {
+    //     window.location.replace('/');
+    //     return;
+    // }
 
     const email_input = document.getElementById('email-input');
     const password_input = document.getElementById('password-input');
@@ -24,7 +24,7 @@ function main() {
         let redirect_url = '/';
         if (data.status_code == 278) {
             redirect_url = data.location;
-        } 
+        }
         if (data.success) {
             window.location.replace(redirect_url);
         }

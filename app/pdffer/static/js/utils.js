@@ -16,7 +16,7 @@ const getCookieValue = (name) => (
 
 export async function is_authenticated() {
     session_id_val = getCookieValue('session_id');
-    if (session_id_val != null && session_id_val != '') {
+    if (session_id_val != null && session_id_val != '' && session_id_val != undefined) {
         const response = await fetch('/auth/verify_session/', {
             method: 'POST',
             headers: {

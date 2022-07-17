@@ -1,4 +1,5 @@
-from django.http import HttpResponse, JsonResponse
+from cgitb import reset
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
@@ -12,10 +13,18 @@ from auth.auth_decorator import api_auth
 
 def index(request):
     ## use cookie in session_id and use it to fetch client_id and api_key. pass it here in context. 
-    session_ekey = request.COOKIES['session_id']  
-    session = Session.objects.get(ekey=session_ekey)
-    client = session.client
-    api_key = client.api_key
+    session_ekey = None if 'session_id' not in request.COOKIES else request.COOKIES['session_id']  
+    try:
+        session = Session.objects.get(ekey=session_ekey)
+        client = session.client
+        api_key = client.api_key
+    except Session.DoesNotExist as sdne:
+        print("sdne", sdne)
+        response = HttpResponseRedirect('/')
+        response.delete_cookie('session_id')
+        return response
+    except KeyError as ke:
+        return HttpResponseRedirect('/login')
     return render(request, "index.html", context={"api_key": api_key})
 
 
@@ -49,7 +58,6 @@ def get_pdf_from_html(request):
     content = json.loads(request.body)
     print("content", content)
     html_body = content["html"]
-
     filename = uuid.uuid4().hex + ".pdf"
     result_file_path = "/tmp/" + filename
     print(result_file_path)
