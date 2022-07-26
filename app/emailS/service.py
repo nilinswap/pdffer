@@ -4,7 +4,7 @@ from os import environ as env
 
 import ssl
 from email.message import EmailMessage
-
+from emailS.errors import EmailVerificationError
 
 email_sender = env['GOOGLE_EMAIL_ADDRESS']
 
@@ -32,8 +32,7 @@ def send_mail(fromaddr, toaddr, subject, message):
             smtp.login(fromaddr, email_password)
             smtp.sendmail(fromaddr, toaddr, em.as_string())
     except Exception as e:
-        print("Exception", e)
-        return False
+        raise EmailVerificationError(toaddr, str(e))
 
 
 def send_verification_email(email, verification_link):

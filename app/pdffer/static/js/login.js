@@ -5,11 +5,13 @@ document.addEventListener("DOMContentLoaded", function () { // wait for the dom 
 });
 
 function main() {
-    // if (is_authenticated()) {
-    //     window.location.replace('/');
-    //     return;
-    // }
-
+    let is_auth = is_authenticated().then(logged_in => {
+        if (logged_in === true) {
+            window.location.replace('/');
+             return;
+        }
+    });
+    console.log("is_auth", is_auth);
     const email_input = document.getElementById('email-input');
     const password_input = document.getElementById('password-input');
     const form_input = document.getElementById('login-form');
@@ -20,9 +22,11 @@ function main() {
             email: email_input.value,
             password: password_input.value
         }
-        const data = hit_api('/auth/verify_login/', 'POST', body);
+        const {data, status} = await hit_api('/auth/verify_login/', 'POST', body);
+        console.log('data', data);
+        window.datadata = data;
         let redirect_url = '/';
-        if (data.status_code == 278) {
+        if (status == 278) {
             redirect_url = data.location;
         }
         if (data.success) {

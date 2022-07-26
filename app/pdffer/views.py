@@ -13,7 +13,11 @@ from auth.auth_decorator import api_auth
 
 def index(request):
     ## use cookie in session_id and use it to fetch client_id and api_key. pass it here in context. 
-    session_ekey = None if 'session_id' not in request.COOKIES else request.COOKIES['session_id']  
+    if 'session_id' not in request.COOKIES:
+        return HttpResponseRedirect('/login')
+    else:
+        session_ekey = request.COOKIES['session_id']
+    
     try:
         session = Session.objects.get(ekey=session_ekey)
         client = session.client
