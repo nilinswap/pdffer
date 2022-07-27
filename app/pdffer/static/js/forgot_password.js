@@ -6,9 +6,8 @@ document.addEventListener("DOMContentLoaded", function () { // wait for the dom 
 });
 
 function validate_form() {
-    const repassword_input = document.getElementById('repassword-input');
-    const password_input = document.getElementById('password-input');
-    console.log('r, p', repassword_input.value, password_input.value);
+    const repassword_input = document.getElementById('repeat-new-password-input');
+    const password_input = document.getElementById('new-password-input');
     if (password_input.value != repassword_input.value) {
         repassword_input.setCustomValidity('Passwords do not match');
         repassword_input.reportValidity()
@@ -20,21 +19,25 @@ function validate_form() {
     return true;
 }
 
+
 function main() {
     is_authenticated().then(logged_in => {
-        if (logged_in === true) {
-            window.location.replace('/');
-             return;
+        if (logged_in) {
+            alert("You should not see this page, if you are logged in. Please contact the administrator.");
+            if (logged_in === true) {
+                window.location.replace('/');
+                return;
+            }
         }
     });
-    const auth_form = new AuthForm('signup-form', '/auth/client/create/', '/please_verify_your_email', validate_form);
+    const auth_form = new AuthForm('forgot-password-form', '/auth/forget_password/', '/password_reset_success', validate_form);
     auth_form.registerSubmit().then(
         () => {
             console.log('registered');
         }
     ).catch(
         (err) => {
-            console.log('signup err', err);
+            console.log('forget password err', err);
         }
     );
-}   
+}

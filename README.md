@@ -33,7 +33,7 @@ Apart from puppdf, took lessons from [this article](https://sasablagojevic.com/s
     - get icons - loading, cross and tick
     - loading effect with tick and cross inside input. with a text somewhere telling what needs done.
 
-- password hash save and hash match
+- password hash save and hash match - done
 
 - do forgot password
 
@@ -41,7 +41,10 @@ Apart from puppdf, took lessons from [this article](https://sasablagojevic.com/s
 
 - implement url forwarding
 
+- provide a logout button
 
+### Hook
+check forgot_password working by checking backend
 
     
 

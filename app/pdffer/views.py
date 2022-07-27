@@ -36,6 +36,10 @@ def index(request):
 def signup(request):
     return render(request, "signup.html", context={})
 
+@csrf_exempt
+def forgot_password(request):
+    return render(request, "forgot_password.html", context={})
+
 
 @csrf_exempt
 def login(request):

@@ -119,6 +119,7 @@ def verify_login(request: HttpRequest):
     def verify_login_handler(content: Dict[str, Any]):
         try:
             client = Client.objects.get(email=content["email"])
+            print("client", client.is_email_verified)
             if not client.is_email_verified:
                 send_verification_email(client)
                 return JsonResponse(data={'success': True, "location": "/please_verify_your_email", "message": "redirect to location"}, status=278)

@@ -26,6 +26,7 @@ def send_mail(fromaddr, toaddr, subject, message):
     em['Subject'] = subject
     em.set_content(message)
     context = ssl.create_default_context()
+    print('toaddr', toaddr)
     try:
         with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
             email_password = env['GOOGLE_EMAIL_PASSWORD']
