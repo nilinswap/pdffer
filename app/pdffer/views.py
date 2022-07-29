@@ -40,7 +40,6 @@ def signup(request):
 def forgot_password(request):
     return render(request, "forgot_password.html", context={})
 
-
 @csrf_exempt
 def login(request):
     return render(request, "login.html", context={})
@@ -48,6 +47,10 @@ def login(request):
 
 def please_verify_your_email(request):
     return render(request, "please_verify_your_email.html", context={})
+    
+
+def reset_password_success(request):
+    return render(request, "reset_password_success.html", context={})
 
 
 @require_http_methods(["GET"])

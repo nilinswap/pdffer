@@ -21,9 +21,10 @@ def send_verification_email(client: Client):
     email_service.send_verification_email(email=client.email, verification_link=verification_link)
 
 
-def sane_email_password_response(content: Dict[str, Any], handler: Callable[[Dict[str, Any]], JsonResponse]):
-    if "email" not in content or "password" not in content:
+def sane_email_password_response(content: Dict[str, Any], handler: Callable[[Dict[str, Any]], JsonResponse], email_name = 'email', password_name = 'password'):
+    if email_name not in content or password_name not in content:
         return JsonResponse(data={'success': False, 'message': 'request misses email or password'}, status=400)
+    print("sane_email_password_request", content)
     return handler(content)
 
 
@@ -163,3 +164,23 @@ def verify_session(request):
     except IntegrityError as ie:
         print("ie", ie)
         return JsonResponse(data={}, status=400)
+
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def forgot_password(request: HttpRequest):
+    email_name = 'email'
+    password_name = 'new_password'
+    def forgot_password_handler(content: Dict[str, Any]):
+        try:
+            client = Client.objects.get(email=content[email_name])
+            client.password = make_password(content[password_name])
+            client.save()
+            response = JsonResponse(data={'success': True}, status=200)
+            return response
+        except Client.DoesNotExist:
+            return JsonResponse(data={}, status=404)
+        
+    content = json.loads(request.body.decode("utf-8"))
+    print('content', content)
+    return sane_email_password_response(content, forgot_password_handler, email_name, password_name)

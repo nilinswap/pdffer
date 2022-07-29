@@ -30,7 +30,7 @@ function main() {
             }
         }
     });
-    const auth_form = new AuthForm('forgot-password-form', '/auth/forget_password/', '/password_reset_success', validate_form);
+    const auth_form = new AuthForm('forgot-password-form', '/auth/forgot_password/', '/reset_password_success', validate_form);
     auth_form.registerSubmit().then(
         () => {
             console.log('registered');
