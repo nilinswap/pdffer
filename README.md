@@ -33,29 +33,17 @@ Apart from puppdf, took lessons from [this article](https://sasablagojevic.com/s
     - get icons - loading, cross and tick
     - loading effect with tick and cross inside input. with a text somewhere telling what needs done.
 
-- password hash save and hash match - done
-
-- do forgot password
-
-- keep a table of emails and their verification links and check if the link is still valid. Instead of doing it here, do it based on delta of email sent and verification link clicked.
-
 - implement url forwarding
 
-- provide a logout button
 
 ### Hook
-check forgot_password working by checking backend
-
-    
-
-
-
 
 
 apis 
 
 X Identify Code Decouple
 - Code Decouple
+- Tests
 - Documentation
 - make ui to consume all of above. 
 - Think credits, billing, pricing.
@@ -90,3 +78,7 @@ Next stage todo
 2. get secret from kms or something. right now one has to go into docker container and add password manually for email
 
 3. add multi-level logs
+
+
+## Hook -
+

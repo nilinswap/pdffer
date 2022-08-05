@@ -1,6 +1,10 @@
+import re
+from django.http import JsonResponse
 from proj import settings
 from pdffer.constants import API_KEY
 from auth.service import verify
+from appmigrations.models import Session
+
 
 class ApiAuthMiddleware(object):
     # One-time configuration and initialization.
@@ -10,6 +14,20 @@ class ApiAuthMiddleware(object):
         # One-time configuration and initialization.
 
     def __call__(self, request):
+        session_id = request.COOKIES.get("session_id")
+        if session_id:
+            try:
+                session = Session.objects.get(ekey=session_id)
+                request.client = session.client
+                request.is_page_authenticated = True
+
+            except Session.DoesNotExist:
+                request.is_page_authenticated = False
+            except Exception as e:
+                raise e
+        else:
+            request.is_page_authenticated = False
+
         api_key = request.headers.get(API_KEY)
         try:
             client_id = verify(api_key=api_key)
@@ -22,8 +40,4 @@ class ApiAuthMiddleware(object):
             raise e
         response = self.get_response(request)
 
-        # Code to be executed for each request/response after
-        # the view is called.
-
         return response
-

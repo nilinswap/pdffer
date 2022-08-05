@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from emailS.errors import EmailVerificationError
 from emailS import service as email_service
-from appmigrations.models import Client, Invite, Session
+from appmigrations.models import Client, Invite, Session, VerificationEmailLinkEntry
 import json
 import datetime
 from django.utils import timezone
@@ -17,8 +17,15 @@ from django.contrib.auth.hashers import make_password, check_password
 
 def send_verification_email(client: Client):
     client_ekey = client.ekey
-    verification_link = f"{settings.SITE_URL}/auth/verify_email/{client_ekey}"
-    email_service.send_verification_email(email=client.email, verification_link=verification_link)
+    client = Client.objects.get(ekey=client_ekey)
+    linkEntry = VerificationEmailLinkEntry(client = client)
+    linkEntry.save()
+    print("linkEntry", linkEntry)
+    link = linkEntry.ekey
+    verification_link = f"{settings.SITE_URL}/auth/verify_email/{link}"
+    email_service.send_verification_email(email=client.email, verification_link=verification_link) 
+    ## TODO: In the most ideal scenario, I should mark a linkEntry 'sent' after this and use that time to determine if the email has link that is valid. 
+
 
 
 def sane_email_password_response(content: Dict[str, Any], handler: Callable[[Dict[str, Any]], JsonResponse], email_name = 'email', password_name = 'password'):
@@ -50,7 +57,7 @@ def create_client(request: HttpRequest):
                 password=salty_pass,
                 api_key=uuid.uuid4().hex,
             )
-            client.save()
+            print("client", client)
             send_verification_email(client)
         except IntegrityError as ie:
             print("ie", ie)
@@ -87,13 +94,13 @@ def delete_client(request: HttpRequest):
 
 @csrf_exempt
 @require_http_methods(["GET"])
-def verify_email(_: HttpRequest, client_ekey: str):
+def verify_email(_: HttpRequest, link_ekey: str):
     try:
-        client = Client.objects.get(ekey=client_ekey)
+        linkEntry = VerificationEmailLinkEntry.objects.get(ekey=link_ekey)
+        client = Client.objects.get(ekey=linkEntry.client.ekey)
         if client.is_email_verified:
             pass
-        elif client.created_on < (timezone.now() - datetime.timedelta(minutes=30)):
-            ## TODO: keep a table of emails and their verification links and check if the link is still valid. Instead of doing it here, do it based on delta of email sent and verification link clicked.
+        elif linkEntry.created_on < (timezone.now() - datetime.timedelta(minutes=30)):
             return JsonResponse(
                 data={
                     "message": "Email verification link is expired",
@@ -184,3 +191,18 @@ def forgot_password(request: HttpRequest):
     content = json.loads(request.body.decode("utf-8"))
     print('content', content)
     return sane_email_password_response(content, forgot_password_handler, email_name, password_name)
+
+
+@csrf_exempt
+@require_http_methods(["GET"])
+def logout(request: HttpRequest):
+    # read request cookie
+    try:
+        session_cookie = request.COOKIES.get('session_id')
+        session = Session.objects.get(ekey=session_cookie)
+        session.delete()
+        response = HttpResponseRedirect('/login') #TODO: should go with redirect url to the login page instead so that user is brought back to the resource that was denied. 
+        response.delete_cookie('session_id')
+        return response
+    except Session.DoesNotExist:
+        return HttpResponseRedirect('/')

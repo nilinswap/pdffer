@@ -8,49 +8,46 @@ import uuid, os, json
 import base64
 from xhtml2pdf import pisa
 
-from auth.auth_decorator import api_auth
+from auth.auth_decorator import api_auth, page_auth
 
 
+@page_auth(False)
 def index(request):
-    ## use cookie in session_id and use it to fetch client_id and api_key. pass it here in context. 
-    if 'session_id' not in request.COOKIES:
-        return HttpResponseRedirect('/login')
+    if hasattr(request, 'client') and request.client:
+        api_key = request.client.api_key
     else:
-        session_ekey = request.COOKIES['session_id']
-    
-    try:
-        session = Session.objects.get(ekey=session_ekey)
-        client = session.client
-        api_key = client.api_key
-    except Session.DoesNotExist as sdne:
-        print("sdne", sdne)
-        response = HttpResponseRedirect('/')
-        response.delete_cookie('session_id')
-        return response
-    except KeyError as ke:
-        return HttpResponseRedirect('/login')
-    return render(request, "index.html", context={"api_key": api_key})
+        api_key = None
+    return render(
+        request,
+        "index.html",
+        context={
+            "api_key": api_key,
+            "page_authenticated": request.is_page_authenticated,
+        },
+    )
 
 
 @csrf_exempt
 def signup(request):
-    return render(request, "signup.html", context={})
+    return render(request, "signup.html", context={"page_authenticated": request.is_page_authenticated,})
+
 
 @csrf_exempt
 def forgot_password(request):
-    return render(request, "forgot_password.html", context={})
+    return render(request, "forgot_password.html", context={"page_authenticated": request.is_page_authenticated,})
+
 
 @csrf_exempt
 def login(request):
-    return render(request, "login.html", context={})
+    return render(request, "login.html", context={"page_authenticated": request.is_page_authenticated,})
 
 
 def please_verify_your_email(request):
-    return render(request, "please_verify_your_email.html", context={})
-    
+    return render(request, "please_verify_your_email.html", context={"page_authenticated": request.is_page_authenticated,})
+
 
 def reset_password_success(request):
-    return render(request, "reset_password_success.html", context={})
+    return render(request, "reset_password_success.html", context={"page_authenticated": request.is_page_authenticated,})
 
 
 @require_http_methods(["GET"])
