@@ -28,11 +28,6 @@ Apart from puppdf, took lessons from [this article](https://sasablagojevic.com/s
 
 ### Registration
 
-- add feature to verify if email is already taken. 
-    - make an api that takes an email and returns true or false on uniqueness
-    - get icons - loading, cross and tick
-    - loading effect with tick and cross inside input. with a text somewhere telling what needs done.
-
 - use next_url redirection for logout and signup
 
 - it needs csrf check

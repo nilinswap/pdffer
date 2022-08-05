@@ -36,6 +36,14 @@ function integrate_verify_email() {
             } else if (res.data.valid_email && !res.data.unique_email) {
                 svg = 'cross.svg';
             }
+            
+            if (svg !== 'tick.svg') {
+                email_input.setCustomValidity(res.data.message);
+                email_input.reportValidity()
+            }else {
+                email_input.setCustomValidity('');
+            }
+            
             let email_svg = document.getElementById('emailsvg').getElementsByTagName('img')[0];
             email_svg.src = `/static/images/icons/${svg}`;
         }
