@@ -26,7 +26,7 @@ services:
       - DB_USER=pdffer
       - DB_PASS=pdffer
       - GOOGLE_EMAIL_ADDRESS=iit2015085@iiita.ac.in
-      - GOOGLE_EMAIL_PASSWORD=afhgiiaglcymrbmu
+      - GOOGLE_EMAIL_PASSWORD=
     volumes:
       - "./app:/usr/app"
     depends_on:
