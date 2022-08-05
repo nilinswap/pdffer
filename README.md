@@ -32,7 +32,6 @@ Apart from puppdf, took lessons from [this article](https://sasablagojevic.com/s
 
 - it needs csrf check
 
-### Hook
 
 
 apis 
