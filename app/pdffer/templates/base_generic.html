@@ -1,26 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>search-item</title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
-        {% load static %}
-        <link rel="stylesheet" href="{% static 'css/style.css' %}">
-        {% block source-links %}{% endblock %}
-    </head>
-    <body>
-        <div class="root-block">
-            <div class="header-block">
-                <text style="align-self: center;"> <h6>Search Item</h6> </text>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDFfer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css"
+        integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block source-links %}{% endblock %}
+</head>
+
+<body>
+    <div class="root-block">
+        <div class="header-block">
+            <text style="align-self: center;">
+                <h6>PDFfer</h6>
+            </text>
+            {% if page_authenticated %}
+            <div class="logout-button">
+                <button onclick="logOut()">Logout</button>
             </div>
-            <div class="content-block">
-                {% block content %}{% endblock %}
+            {% else %}
+            <div class="login-button">
+                <a href="/login">Login</a>
             </div>
-            <div class="footer-block">
-                <text style="align-self: center;"> Footer </text>
+            <div class="signup-button">
+                <a href="/signup">Signup</a>
             </div>
+            {% endif %}
         </div>
-    </body>
+        <div class="content-block">
+            {% block content %}{% endblock %}
+        </div>
+        <div class="footer-block">
+            <text style="align-self: center;"> Footer </text>
+        </div>
+    </div>
+    <script src="{% static 'js/base_generic.js' %}"></script>  
+</body>
+
 </html>

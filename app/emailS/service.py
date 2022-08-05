@@ -4,7 +4,7 @@ from os import environ as env
 
 import ssl
 from email.message import EmailMessage
-
+from emailS.errors import EmailVerificationError
 
 email_sender = env['GOOGLE_EMAIL_ADDRESS']
 
@@ -26,17 +26,14 @@ def send_mail(fromaddr, toaddr, subject, message):
     em['Subject'] = subject
     em.set_content(message)
     context = ssl.create_default_context()
-
+    print('toaddr', toaddr)
     try:
         with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=context) as smtp:
             email_password = env['GOOGLE_EMAIL_PASSWORD']
             smtp.login(fromaddr, email_password)
-    
             smtp.sendmail(fromaddr, toaddr, em.as_string())
-    
     except Exception as e:
-        print("Exception", e)
-        return False
+        raise EmailVerificationError(toaddr, str(e))
 
 
 def send_verification_email(email, verification_link):

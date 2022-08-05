@@ -26,34 +26,55 @@ Apart from puppdf, took lessons from [this article](https://sasablagojevic.com/s
 
 ## TODO
 
+### Registration
+
+- use next_url redirection for logout and signup
+
+- it needs csrf check
+
+### Hook
+
+
 apis 
-x generate invite - use admin site
-x verify invite
-x create client
-- verify Email
-- signup with email and pass
-- verify login
-- generate api_key
 
-- signup flow - ask him to verify email. On verification, redirect it the 
-
+X Identify Code Decouple
+- Code Decouple
+- Tests
+- Documentation
 - make ui to consume all of above. 
 - Think credits, billing, pricing.
 
-Read
+Read 
 
 Email Verification
 Cost analysis per pdf
 Payments integration
-
+Look at all test cases around auth
 
 
 email verify
 
+## Auth Decouple
+
+1. Client, Session migrations move to auth
+2. all login and signup web templates must be in auth/templates.
+3. make it into a django library. 
+
+
+## EmailS Decouple
+
+Already there. Just make it a library.
+
 
 Next stage todo
 1. review areas for security flaws like 
-    - verification email should not give away so much
+    - verification email should not give away so much.
     - people can hit and try verification link etc.
 
 2. get secret from kms or something. right now one has to go into docker container and add password manually for email
+
+3. add multi-level logs
+
+
+## Hook -
+
