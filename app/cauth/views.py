@@ -4,12 +4,12 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from emailS.errors import EmailVerificationError
 from emailS import service as email_service
-from appmigrations.models import Client, Invite, Session, VerificationEmailLinkEntry
+from .models import Client, Invite, Session, VerificationEmailLinkEntry
 import json
 import datetime
 from django.utils import timezone
 from django.conf import settings
-from auth.utils import set_cookie
+from cauth.utils import set_cookie
 import uuid
 from typing import Dict, Any, Callable
 from django.contrib.auth.hashers import make_password, check_password

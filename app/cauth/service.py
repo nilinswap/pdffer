@@ -1,4 +1,4 @@
-from appmigrations.models import Client
+from .models import Client
 
 def verify(api_key: str):
     ## TODO: Implement a get_or_404 https://docs.djangoproject.com/en/dev/topics/db/managers/

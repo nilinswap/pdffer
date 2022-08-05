@@ -4,13 +4,13 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.core.exceptions import ValidationError
-from appmigrations.models import Client
+from cauth.models import Client
 import uuid, json
 import base64
 from xhtml2pdf import pisa
 from django import forms
 
-from auth.auth_decorator import api_auth, page_auth
+from cauth.auth_decorator import api_auth, page_auth
 
 
 def valid_email(email: str):
@@ -64,7 +64,7 @@ def forgot_password(request):
 
 @csrf_exempt
 def login(request):
-    next_url = request.GET["next"] if "next" in request.GET else None
+    next_url = request.GET["next"] if "next" in request.GET else '/'
     print("next_url", next_url)
     return render(
         request,
