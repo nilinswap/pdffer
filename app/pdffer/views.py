@@ -39,7 +39,14 @@ def forgot_password(request):
 
 @csrf_exempt
 def login(request):
-    return render(request, "login.html", context={"page_authenticated": request.is_page_authenticated,})
+    next_url = request.GET['next'] if 'next' in request.GET else None
+    print("next_url", next_url)
+    return render(request, "login.html", context={"page_authenticated": request.is_page_authenticated, 'next_url': next_url})
+
+
+@page_auth()
+def a(request):
+    return render(request, "a.html", context={"page_authenticated": request.is_page_authenticated,})
 
 
 def please_verify_your_email(request):

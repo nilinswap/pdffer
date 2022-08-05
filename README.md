@@ -35,6 +35,7 @@ Apart from puppdf, took lessons from [this article](https://sasablagojevic.com/s
 
 - implement url forwarding
 
+- it needs csrf check
 
 ### Hook
 

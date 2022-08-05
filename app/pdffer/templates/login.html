@@ -9,6 +9,7 @@
         <form id="login-form" class="input-group" method="post">
             <input name="email" id="email-input" type="email" class="form-control" placeholder="email" required>
             <input name="password" id="password-input" type="password" class="form-control" placeholder="password" required>
+            <input type="hidden" name="next_url" value="{{ next_url }}"/>
             <span class="input-group-btn">
                 <button id="login-submit-button" class="btn btn-default" type="submit">Submit</button>
             </span>

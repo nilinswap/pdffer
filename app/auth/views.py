@@ -20,7 +20,6 @@ def send_verification_email(client: Client):
     client = Client.objects.get(ekey=client_ekey)
     linkEntry = VerificationEmailLinkEntry(client = client)
     linkEntry.save()
-    print("linkEntry", linkEntry)
     link = linkEntry.ekey
     verification_link = f"{settings.SITE_URL}/auth/verify_email/{link}"
     email_service.send_verification_email(email=client.email, verification_link=verification_link) 
@@ -134,9 +133,11 @@ def verify_login(request: HttpRequest):
             elif not check_password(content["password"], client.password):
                 return JsonResponse(data={}, status=401)
             session = Session.objects.create(client=client)
-            response = JsonResponse(data={'success': True}, status=200)
+            res_data = {'success': True}
+            if 'next_url' in content:
+                res_data['next_url'] = content['next_url']
+            response = JsonResponse(data=res_data, status=200)
             set_cookie(response, 'session_id', session.ekey)
-            print("response", response.cookies)
             return response
         except Client.DoesNotExist:
             return JsonResponse(data={}, status=404)
@@ -150,6 +151,8 @@ def verify_login(request: HttpRequest):
                 "success": False,
                 "message": str(eve)
             }, status=500)
+        except Exception as e:
+            raise e
         
     content = json.loads(request.body.decode("utf-8"))
     return sane_email_password_response(content, verify_login_handler)
@@ -169,7 +172,6 @@ def verify_session(request):
     except Session.DoesNotExist:
         return JsonResponse(data={}, status=404)
     except IntegrityError as ie:
-        print("ie", ie)
         return JsonResponse(data={}, status=400)
 
 
@@ -189,7 +191,6 @@ def forgot_password(request: HttpRequest):
             return JsonResponse(data={}, status=404)
         
     content = json.loads(request.body.decode("utf-8"))
-    print('content', content)
     return sane_email_password_response(content, forgot_password_handler, email_name, password_name)
 
 
