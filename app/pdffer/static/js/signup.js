@@ -1,9 +1,11 @@
-import {is_authenticated} from './utils.js';
+import {hit_api, is_authenticated} from './utils.js';
 import AuthForm from './auth_form.js';
 
 document.addEventListener("DOMContentLoaded", function () { // wait for the dom to load before you start playing with it. 
     main();
 });
+
+
 
 function validate_form() {
     const repassword_input = document.getElementById('repassword-input');
@@ -20,6 +22,26 @@ function validate_form() {
     return true;
 }
 
+
+function integrate_verify_email() {
+    const email_input = document.getElementById('email-input');
+    email_input.addEventListener('input', async function () {
+        const email = email_input.value;
+        const res = await hit_api(`/api/verify_email?email=${email}`, 'GET');
+        console.log("integrate_verify_email res", res, res.data, res.status);
+        if (res.status === 200) {
+            let svg = 'middle.svg'
+            if (res.data.valid_email && res.data.unique_email) {
+                svg = 'tick.svg';
+            } else if (res.data.valid_email && !res.data.unique_email) {
+                svg = 'cross.svg';
+            }
+            let email_svg = document.getElementById('emailsvg').getElementsByTagName('img')[0];
+            email_svg.src = `/static/images/icons/${svg}`;
+        }
+    });
+}
+
 function main() {
     is_authenticated().then(logged_in => {
         if (logged_in === true) {
@@ -27,6 +49,7 @@ function main() {
              return;
         }
     });
+    integrate_verify_email();
     const auth_form = new AuthForm('signup-form', '/auth/client/create/', '/please_verify_your_email', validate_form);
     auth_form.registerSubmit().then(
         () => {

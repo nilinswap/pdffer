@@ -10,7 +10,12 @@
         <form id="signup-form" class="input-group" method="post">
             <div class="form-group">
                 <div class="flex"><label for="email-input">email</label><text style="color:red;">*</text></div>
-                <input name="email" id="email-input" type="email" class="form-control" placeholder="email" required>
+                <div class="flex">
+                    <input name="email" id="email-input" type="email" class="form-control" placeholder="email" required>
+                    <div id="emailsvg">
+                      <img style="width: 30px; height: 30px" src="http://localhost:8000/static/images/icons/tick.svg">  
+                    </div>
+                </div>
             </div>
             <div class="form-group">
                 <div class="flex"><label for="password-input">password</label><text style="color:red;">*</text></div>

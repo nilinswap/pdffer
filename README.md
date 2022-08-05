@@ -33,7 +33,7 @@ Apart from puppdf, took lessons from [this article](https://sasablagojevic.com/s
     - get icons - loading, cross and tick
     - loading effect with tick and cross inside input. with a text somewhere telling what needs done.
 
-- implement url forwarding
+- use next_url redirection for logout and signup
 
 - it needs csrf check
 
