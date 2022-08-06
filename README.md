@@ -55,7 +55,7 @@ email verify
 
 ## Auth Decouple
 
-1. Client, Session migrations move to auth
+1. Client, Session migrations move to auth - done
 2. all login and signup web templates must be in auth/templates.
 3. make it into a django library. 
 

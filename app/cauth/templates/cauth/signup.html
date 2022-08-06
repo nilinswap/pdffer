@@ -1,4 +1,4 @@
-{% extends "base_generic.html" %}
+{% extends "pdffer/base_generic.html" %}
 
 
 
@@ -13,7 +13,7 @@
                 <div class="flex">
                     <input name="email" id="email-input" type="email" class="form-control" placeholder="email" required>
                     <div id="emailsvg">
-                      <img style="width: 30px; height: 30px" src="http://localhost:8000/static/images/icons/tick.svg">  
+                      <img style="width: 30px; height: 30px" src="{% static 'cauth/images/icons/middle.svg' %}">  
                     </div>
                 </div>
             </div>
@@ -31,6 +31,6 @@
         </form>
     </div>
 </div>
-<script type="module" src="{% static 'js/signup.js' %}"></script>
+<script type="module" src="{% static 'cauth/js/signup.js' %}"></script>
 
 {% endblock %}

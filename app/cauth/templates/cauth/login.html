@@ -1,4 +1,4 @@
-{% extends "base_generic.html" %}
+{% extends "pdffer/base_generic.html" %}
 
 {% block content %}
 
@@ -13,10 +13,10 @@
             <span class="input-group-btn">
                 <button id="login-submit-button" class="btn btn-default" type="submit">Submit</button>
             </span>
-            <a href="/forgot_password">Forgot Password?</a>
+            <a href="/auth/forgot_password">Forgot Password?</a>
         </form>
     </div>
 </div>
 
-<script type="module" src="{% static 'js/login.js' %}"></script>
+<script type="module" src="{% static 'cauth/js/login.js' %}"></script>
 {% endblock %}

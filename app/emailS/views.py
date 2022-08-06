@@ -1,3 +1,5 @@
-from django.shortcuts import render
+from django.http import HttpRequest, JsonResponse
+from .service import valid_email
+from cauth.models import Client
 
-# Create your views here.
+

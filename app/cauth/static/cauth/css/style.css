@@ -5,6 +5,12 @@
     margin-top: 2rem;
 }
 
+.input-group {
+    display: flex;
+    flex-direction: column; 
+    gap: 1rem; 
+}
+
 .root-block {
     display:flex; 
     flex-direction: column;
@@ -28,10 +34,4 @@
     height: 4rem;
     display: flex;
     justify-content: space-evenly;
-}
-
-.input-group {
-    display: flex;
-    flex-direction: column; 
-    gap: 1rem; 
 }

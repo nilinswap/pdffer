@@ -20,7 +20,7 @@ def page_auth(redirect_to_login=True):
         def decorator(request, *args, **kwargs):
             print("request page auth", request.is_page_authenticated)
             if not request.is_page_authenticated and redirect_to_login:
-                url = f'/login?next={request.path}'
+                url = f'/auth/login?next={request.path}'
                 print("url", url)
                 response = HttpResponseRedirect(url) #TODO: should go with redirect url to the login page instead so that user is brought back to the resource that was denied. 
                 response.delete_cookie('session_id')

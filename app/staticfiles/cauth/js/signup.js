@@ -27,7 +27,7 @@ function integrate_verify_email() {
     const email_input = document.getElementById('email-input');
     email_input.addEventListener('input', async function () {
         const email = email_input.value;
-        const res = await hit_api(`/api/verify_email?email=${email}`, 'GET');
+        const res = await hit_api(`/auth/api/validate_email?email=${email}`, 'GET');
         console.log("integrate_verify_email res", res, res.data, res.status);
         if (res.status === 200) {
             let svg = 'middle.svg'
@@ -58,7 +58,7 @@ function main() {
         }
     });
     integrate_verify_email();
-    const auth_form = new AuthForm('signup-form', '/auth/client/create/', '/please_verify_your_email', validate_form);
+    const auth_form = new AuthForm('signup-form', '/auth/api/client/create/', '/auth/please_verify_your_email', validate_form);
     auth_form.registerSubmit().then(
         () => {
             console.log('registered');

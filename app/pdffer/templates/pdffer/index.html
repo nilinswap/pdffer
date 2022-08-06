@@ -1,4 +1,4 @@
-{% extends "base_generic.html" %}
+{% extends "pdffer/base_generic.html" %}
 
 
 
@@ -6,7 +6,7 @@
 
 {% load static %}
 <div class="main-plate">
-    <div class="col-lg-6">
+    <div class="col-lg-6 flex">
         <div> api_key </div>
         <div> {{ api_key }}</div>
     </div>
@@ -14,5 +14,5 @@
         
     </ul>
 </div>
-<script src="{% static 'js/index.js' %}"></script>  
+<script src="{% static 'pdffer/js/index.js' %}"></script>  
 {% endblock %}
