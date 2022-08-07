@@ -35,3 +35,16 @@
     flex-direction: column; 
     gap: 1rem; 
 }
+
+.main-plate {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column; 
+    gap: 1rem; 
+}

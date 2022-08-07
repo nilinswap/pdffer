@@ -32,7 +32,6 @@ Apart from puppdf, took lessons from [this article](https://sasablagojevic.com/s
 
 - it needs csrf check
 
-### Hook
 
 ### General
 - make auth a library
@@ -59,7 +58,6 @@ Look at all test cases around auth
 
 
 email verify
-
 
 
 Next stage todo
