@@ -1,9 +1,6 @@
-import re
-from django.http import JsonResponse
-from proj import settings
 from pdffer.constants import API_KEY
-from auth.service import verify
-from appmigrations.models import Session
+from cauth.service import verify
+from cauth.models import Session
 
 
 class ApiAuthMiddleware(object):
