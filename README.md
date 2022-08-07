@@ -34,6 +34,12 @@ Apart from puppdf, took lessons from [this article](https://sasablagojevic.com/s
 
 ### Hook
 
+### General
+- make auth a library
+- make emailS a library
+
+
+
 
 apis 
 
@@ -54,16 +60,6 @@ Look at all test cases around auth
 
 email verify
 
-## Auth Decouple
-
-1. Client, Session migrations move to auth
-2. all login and signup web templates must be in auth/templates.
-3. make it into a django library. 
-
-
-## EmailS Decouple
-
-Already there. Just make it a library.
 
 
 Next stage todo
@@ -76,5 +72,12 @@ Next stage todo
 3. add multi-level logs
 
 
-## Hook -
+## Hooks
+
+- Write a documentation explaining everything in auth. 
+- Learn auth from supertoken. 
+- Learn nextjs react
+- learn [nextjs examples.](https://nextjs.org/docs/basic-features/pages#static-generation-recommended)
+
+
 
