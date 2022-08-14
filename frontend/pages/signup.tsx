@@ -5,26 +5,32 @@ import { hit_api } from "./utils";
 import Input from "../components/input";
 import Router from "next/router";
 
-const Login: NextPage = () => {
+const Signup: NextPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
     console.log("submit", email, password);
-    let { data } = await hit_api("http://localhost:8000/auth/api/verify_login/", 'POST', { email, password }); //TODO: improve this snippet. use industry standard. 
-    console.log('data', data);
+    let { data } = await hit_api(
+      "http://localhost:8000/auth/api/client/create/",
+      "POST",
+      { email, password }
+    ); 
+    console.log("data", data);
     if (data.success) {
-      Router.push('/');
+      Router.push("/");
     }
   };
 
   return (
     <div className="flex flex-col gap-8 ml-8 mt-16">
-      <h1>Login</h1>
+      <h1>Signup</h1>
       <form className="flex flex-col gap-2 w-80" onSubmit={handleSubmit}>
         <Input
           type="email"
+          name="email"
           value={email}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setEmail(e.target.value)
@@ -32,21 +38,30 @@ const Login: NextPage = () => {
         />
         <Input
           type="password"
+          name="password"
           value={password}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setPassword(e.target.value)
           }
         />
+        <Input
+          type="password"
+          name="confirm-password"
+          value={confirmPassword}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setConfirmPassword(e.target.value)
+          }
+        />
         <button type="submit" className="bg-blue-500 rounded-lg p-2 w-32">
-          Submit
+          Create account
         </button>
-        <a href="/auth/forgot_password">Forgot Password?</a>
+        <a href="/login">already signed up? go to login page</a>
       </form>
     </div>
   );
 };
 
-export default Login;
+export default Signup;
 
 // TODO:
 // next_url

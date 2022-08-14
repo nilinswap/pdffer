@@ -15,6 +15,6 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/auth/[[...page]].js", "pages/api/hello.js", "config/backendConfig.js"],
   "exclude": ["node_modules"]
 }

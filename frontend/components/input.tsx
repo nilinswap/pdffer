@@ -2,17 +2,18 @@ import { useState } from "react";
 
 interface inputProps {
     type: string;
+    name: string;
     value: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Input: any = ({type, value, onChange}: inputProps) => {
+const Input: any = ({type, name, value, onChange}: inputProps) => {
     return (
       <>
         <input
-          name={type}
+          name={name}
           type={type}
-          placeholder={type}
+          placeholder={name}
           className="bg-gray-200 rounded-lg border border-gray-200 p-2"
           value={value}
           onChange={onChange}
