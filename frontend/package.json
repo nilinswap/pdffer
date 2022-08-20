@@ -14,7 +14,7 @@
     "nodemailer": "^6.7.8",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "supertokens-auth-react": "^0.24.4",
+    "supertokens-auth-react": "github:nilinswap/supertokens-auth-react",
     "supertokens-node": "^11.1.0"
   },
   "devDependencies": {
