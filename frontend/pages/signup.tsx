@@ -1,9 +1,11 @@
 import { NextPage } from "next";
 import { SyntheticEvent } from "react";
 import { useState } from "react";
-import { hit_api } from "./utils";
+import { hit_api } from "../utils";
 import Input from "../components/input";
 import Router from "next/router";
+import Link from "next/link";
+
 
 const Signup: NextPage = () => {
   const [email, setEmail] = useState("");
@@ -55,7 +57,7 @@ const Signup: NextPage = () => {
         <button type="submit" className="bg-blue-500 rounded-lg p-2 w-32">
           Create account
         </button>
-        <a href="/login">already signed up? go to login page</a>
+        <Link href="/login">already signed up? go to login page</Link>
       </form>
     </div>
   );
